@@ -1,23 +1,32 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from . forms import HelloForm
+from .forms import HelloForm
 
 class HelloView(TemplateView):
     def __init__(self):
         self.params = {
-            'title': 'Hello',
-            'form': HelloForm(),
-            'result':None
+            'title': 'Hello', 
+            'form': HelloForm(), 
+            'result': None
         }
 
     def get(self, request):
         return render(request, 'hello/index.html', self.params)
-    
+    '''
     def post(self, request):
-        if ('check' in request.POST):
-            self.params['result'] = 'Checked!'
-        else:
-            self.params['result'] = 'not checked...'
-            self.params['form'] = HelloForm(request.POST)
+        ch = request.POST['choice']
+        self.params['result'] = 'selected: "' + ch + '".'
+        self.params['form'] = HelloForm(request.POST)
         return render(request, 'hello/index.html', self.params)
-    
+    '''
+
+    # 複数選択
+    def post(self, request):
+        ch = request.POST.getlist('choice')
+        result = '<ol class="list-group"><b>selected:</b>'
+        for item in ch:
+            result += '<li class="list-group-item">' + item + '</li>'
+        result += '</ol>'
+        self.params['result'] = result
+        self.params['form'] = HelloForm(request.POST)
+        return render(request, 'hello/index.html', self.params)
