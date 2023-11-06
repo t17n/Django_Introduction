@@ -40,3 +40,7 @@ class HelloForm(forms.Form):
     # チェックボックス
     check = forms.NullBooleanField(label='Check')
     '''
+
+# session
+class SessionForm(forms.Form):
+    session = forms.CharField(label='session', required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
