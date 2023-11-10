@@ -1,19 +1,17 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from .models import Friend
-from .forms import FriendForm
-
-# ★
+from .forms import FriendForm, FindForm
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from django.db.models import Q
+
 
 class FriendList(ListView):
     model = Friend
 
 class FriendDetail(DetailView):
     model = Friend
-
-
 
 
 def index(request):
@@ -61,6 +59,25 @@ def delete(request, num):
         'obj': friend,
     }
     return render(request, 'hello/delete.html', params)
+
+def find(request):
+    if (request.method == 'POST'):
+        msg = 'search result:'
+        form = FindForm(request.POST)
+        find = request.POST['find']
+        list = find.split()
+        data = Friend.objects.filter(name__in=list)
+    else:
+        msg = 'search words...'
+        form = FindForm()
+        data = Friend.objects.all()
+    params = {
+        'title': 'Hello',
+        'message': msg,
+        'form': form,
+        'data': data,
+    }
+    return render(request, 'hello/find.html', params)
 
 
 '''
