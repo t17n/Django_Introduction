@@ -4,7 +4,7 @@ from .models import Friend
 from .forms import FriendForm, FindForm
 from django.views.generic import ListView
 from django.views.generic import DetailView
-from django.db.models import Q
+from django.db.models import Q, Count,Sum,Avg,Min,Max
 
 
 class FriendList(ListView):
@@ -15,9 +15,10 @@ class FriendDetail(DetailView):
 
 
 def index(request):
-    data = Friend.objects.all()
+    data = Friend.objects.all().order_by('age').reverse()
     params = {
         'title': 'Hello',
+        'message':'',
         'data': data,
     }
     return render(request, 'hello/index.html', params)
@@ -62,15 +63,18 @@ def delete(request, num):
 
 def find(request):
     if (request.method == 'POST'):
-        msg = 'search result:'
+        msg = request.POST['find']
         form = FindForm(request.POST)
-        find = request.POST['find']
-        list = find.split()
-        data = Friend.objects.filter(name__in=list)
+        sql = 'select * from hello_friend'
+        if (msg != ''):
+            sql += ' where ' + msg
+        data = Friend.objects.raw(sql)
+        msg = sql
     else:
         msg = 'search words...'
         form = FindForm()
         data = Friend.objects.all()
+
     params = {
         'title': 'Hello',
         'message': msg,
