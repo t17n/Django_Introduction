@@ -17,4 +17,5 @@ urlpatterns = [
     path('detail/<int:pk>', FriendDetail.as_view()), 
 
     path('find', views.find, name='find'),
+    path('check', views.check, name='check'),
 ]
