@@ -10,12 +10,15 @@ class FindForm(forms.Form):
     find = forms.CharField(label='Find', required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
 
 class CheckForm(forms.Form):
-    required = forms.IntegerField(label='Required', \
-                                  widget=forms.NumberInput(attrs={'class':'form-control'}))
-    min = forms.CharField(label='Min', min_length=100, \
-                          widget=forms.TextInput(attrs={'class':'form-control'}))
-    max = forms.CharField(label='Max', max_length=1000, \
-                          widget=forms.TextInput(attrs={'class':'form-control'}))
+    str = forms.CharField(label='String', \
+                          widget=forms.TextInput(attrs={'class':'forms-control'}))
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        str = cleaned_data['str']
+        if (str.lower().startswith('no')):
+            raise forms.ValidationError('You input "NO"!')
+    
 
 '''
 class HelloForm(forms.Form):
