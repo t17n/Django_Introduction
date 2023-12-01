@@ -10,7 +10,12 @@ class FindForm(forms.Form):
     find = forms.CharField(label='Find', required=False, widget=forms.TextInput(attrs={'class':'form-control'}))
 
 class CheckForm(forms.Form):
-    str = forms.CharField(label='Name', widget=forms.TextInput(attrs={'class':'form-control'}))
+    required = forms.IntegerField(label='Required', \
+                                  widget=forms.NumberInput(attrs={'class':'form-control'}))
+    min = forms.CharField(label='Min', min_length=100, \
+                          widget=forms.TextInput(attrs={'class':'form-control'}))
+    max = forms.CharField(label='Max', max_length=1000, \
+                          widget=forms.TextInput(attrs={'class':'form-control'}))
 
 '''
 class HelloForm(forms.Form):
