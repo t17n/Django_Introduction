@@ -5,6 +5,7 @@ from .forms import FriendForm, FindForm, CheckForm
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.db.models import Q, Count,Sum,Avg,Min,Max
+from django.core.paginator import Paginator
 
 
 class FriendList(ListView):
@@ -14,12 +15,13 @@ class FriendDetail(DetailView):
     model = Friend
 
 
-def index(request):
-    data = Friend.objects.all().order_by('age').reverse()
+def index(request, num=1):
+    data = Friend.objects.all()
+    page = Paginator(data, 3)
     params = {
         'title': 'Hello',
         'message':'',
-        'data': data,
+        'data': page.get_page(num),
     }
     return render(request, 'hello/index.html', params)
 
