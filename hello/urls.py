@@ -1,9 +1,9 @@
 from django.urls import path
-from . import views
+from .import views
 
 # ★
-from . views import FriendList
-from . views import FriendDetail
+from .views import FriendList
+from .views import FriendDetail
 
 
 urlpatterns = [
@@ -18,5 +18,7 @@ urlpatterns = [
 
     path('find', views.find, name='find'),
     path('check', views.check, name='check'),
-    path('<int:num>', views.index, name='index')
+    path('<int:num>', views.index, name='index'),
+    path('message/', views.message, name='message'),
+    path('message/<int:page>', views.message, name='message'),
 ]

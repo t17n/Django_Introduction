@@ -15,6 +15,7 @@
             <th>age</th>
             <th>mail</th>
             <th>birthday</th>
+            <th>message</th>
         </tr>
     {% for item in data %}
         <tr>
@@ -23,6 +24,13 @@
             <td>{{item.age}}</td>
             <td>{{item.mail}}</td>
             <td>{{item.birthday}}</td>
+            <td>
+                <ul>
+                {% for ob in item.message_set.all %}
+                    <li>{{ob.title}}
+                {% endfor %}
+                </ul>
+            </td>
         </tr>
     {% endfor %}
     </table>
